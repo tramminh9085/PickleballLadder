@@ -110,11 +110,7 @@ function calculateStandings() {
 }
 
 function filterAndSort() {
-    const searchTerm = document.getElementById('searchInput').value.toLocaleLowerCase('vi');
-    const filtered = standings.filter(player =>
-        player.name.toLocaleLowerCase('vi').includes(searchTerm) ||
-        (player.location || '').toLocaleLowerCase('vi').includes(searchTerm)
-    );
+    const filtered = [...standings];
     filtered.sort(compareStandings);
     document.getElementById('playersList').replaceChildren(...filtered.map(createPlayerRow));
 }
@@ -418,7 +414,7 @@ async function submitDoublesMatch(event) {
     message.textContent = 'Đã lưu kết quả cho ngày chơi này.';
 }
 
-document.getElementById('searchInput').addEventListener('input', filterAndSort);
+
 document.getElementById('newPlayDayButton').addEventListener('click', showNewPlayDayForm);
 document.getElementById('editPlayDayButton').addEventListener('click', () => {
     const day = selectedPlayDay();

@@ -249,10 +249,15 @@ main {
 
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
+    .table-header {
+        font-size: 11px;
+        line-height: 1.2;
+    }
+    
     .table-header,
     .table-row {
-        grid-template-columns: 32px 1fr 36px 36px 50px 36px;
-        gap: 4px;
+        grid-template-columns: 28px 1fr 38px 38px 46px 32px;
+        gap: 3px;
         padding: 10px 4px;
     }
 
@@ -263,7 +268,11 @@ main {
 
     .ladder-table.hide-max .table-header,
     .ladder-table.hide-max .table-row {
-        grid-template-columns: 32px 1fr 36px 36px 60px;
+        grid-template-columns: 28px 1fr 40px 40px 52px;
+    }
+
+    .stat-cell {
+        font-size: 12px;
     }
 
     .rank-badge {

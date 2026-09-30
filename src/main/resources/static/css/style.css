@@ -603,9 +603,15 @@ main {
     border-bottom: 1px solid var(--border-color);
     display: grid;
     gap: 12px;
-    grid-template-columns: 1fr auto 1fr auto;
+    grid-template-columns: 40px 1fr auto 1fr auto;
     padding: 14px 0;
     text-align: center;
+}
+
+.match-index {
+    color: #999;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .match-result:last-child {
@@ -667,9 +673,14 @@ main {
     }
 
     .match-result {
-        grid-template-columns: 1fr auto 1fr;
+        grid-template-columns: 24px 1fr auto 1fr;
         gap: 4px;
         padding: 8px 0;
+    }
+
+    .match-index {
+        font-size: 12px;
+        text-align: left;
     }
 
     .match-team {
@@ -681,11 +692,11 @@ main {
         padding: 4px 8px;
     }
 
-    .match-result > :nth-child(4) {
+    .match-result > :nth-child(5) {
         grid-column: 1 / -1;
     }
 
-    .match-result > :nth-child(4):empty {
+    .match-result > :nth-child(5):empty {
         display: none;
     }
 

@@ -249,9 +249,15 @@ function renderMatchHistory() {
         history.innerHTML = '<div class="loading">Chưa có trận đấu nào trong ngày này.</div>';
         return;
     }
-    const rows = dayMatches.map(match => {
+    const totalMatches = dayMatches.length;
+    const rows = dayMatches.map((match, index) => {
         const row = document.createElement('div');
         row.className = 'match-result';
+        
+        const matchIndex = document.createElement('div');
+        matchIndex.className = 'match-index';
+        matchIndex.textContent = `#${totalMatches - index}`;
+        
         const team1 = document.createElement('div');
         team1.className = `match-team ${match.winningTeam === 1 ? 'winner' : ''}`;
         team1.textContent = `${match.team1Player1Name} & ${match.team1Player2Name}`;
@@ -261,7 +267,8 @@ function renderMatchHistory() {
         const team2 = document.createElement('div');
         team2.className = `match-team ${match.winningTeam === 2 ? 'winner' : ''}`;
         team2.textContent = `${match.team2Player1Name} & ${match.team2Player2Name}`;
-        row.append(team1, score, team2);
+        
+        row.append(matchIndex, team1, score, team2);
         if (window.adminAuthenticated) {
             const actions = document.createElement('div');
             actions.className = 'match-actions';

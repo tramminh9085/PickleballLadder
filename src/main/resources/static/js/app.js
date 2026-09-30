@@ -66,8 +66,8 @@ function compareStandings(a, b) {
     const bGames = b.wins + b.losses;
     const aWinRate = aGames ? a.wins / aGames : 0;
     const bWinRate = bGames ? b.wins / bGames : 0;
-    return b.wins - a.wins
-        || bWinRate - aWinRate
+    return bWinRate - aWinRate
+        || b.wins - a.wins
         || b.pointDifference - a.pointDifference
         || a.name.localeCompare(b.name, 'vi');
 }

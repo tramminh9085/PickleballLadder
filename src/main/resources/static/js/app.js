@@ -5,6 +5,7 @@ let standings = [];
 let selectedPlayDayId = null;
 let editingPlayDayId = null;
 let editingMatchId = null;
+let appConfig = { maxLosses: 3, showMaxColumn: true };
 
 const text = (id, value) => {
     document.getElementById(id).textContent = value ?? '';
@@ -57,7 +58,18 @@ function createPlayerRow(player, index) {
     const winRate = document.createElement('div');
     winRate.className = 'stat-cell';
     winRate.textContent = `${winPercentage}%`;
-    row.append(rank, info, pointDifference, wins, losses, winRate);
+
+    const maxCol = document.createElement('div');
+    maxCol.className = 'stat-cell max-col';
+    if (player.losses >= appConfig.maxLosses) {
+        maxCol.textContent = appConfig.maxLosses;
+        maxCol.style.color = 'red';
+        maxCol.style.fontWeight = 'bold';
+    } else {
+        maxCol.textContent = player.losses;
+    }
+
+    row.append(rank, info, pointDifference, wins, losses, winRate, maxCol);
     return row;
 }
 
@@ -286,10 +298,11 @@ function renderMatchHistory() {
 }
 
 async function loadApplication() {
-    const [playersResponse, playDaysResponse, matchesResponse] = await Promise.all([
+    const [playersResponse, playDaysResponse, matchesResponse, configResponse] = await Promise.all([
         fetch('/api/players'),
         fetch('/api/play-days'),
-        fetch('/api/matches')
+        fetch('/api/matches'),
+        fetch('/api/config')
     ]);
     if (!playersResponse.ok || !playDaysResponse.ok || !matchesResponse.ok) {
         throw new Error('API returned an unsuccessful response');
@@ -297,6 +310,22 @@ async function loadApplication() {
     players = await playersResponse.json();
     playDays = await playDaysResponse.json();
     matches = await matchesResponse.json();
+    if (configResponse.ok) {
+        appConfig = await configResponse.json();
+        const configMaxLosses = document.getElementById('configMaxLosses');
+        if (configMaxLosses) {
+            configMaxLosses.value = appConfig.maxLosses;
+            document.getElementById('configShowMax').checked = appConfig.showMaxColumn;
+        }
+        const ladderTable = document.getElementById('ladderTable');
+        if (ladderTable) {
+            if (appConfig.showMaxColumn) {
+                ladderTable.classList.remove('hide-max');
+            } else {
+                ladderTable.classList.add('hide-max');
+            }
+        }
+    }
     if (!playDays.some(day => day.id === selectedPlayDayId)) {
         selectedPlayDayId = playDays[0]?.id ?? null;
     }
@@ -397,8 +426,34 @@ document.getElementById('editPlayDayButton').addEventListener('click', () => {
 });
 document.getElementById('playDayForm').addEventListener('submit', submitPlayDay);
 document.getElementById('cancelPlayDayEdit').addEventListener('click', closePlayDayEditor);
+async function submitConfig(event) {
+    event.preventDefault();
+    const payload = {
+        maxLosses: Number(document.getElementById('configMaxLosses').value),
+        showMaxColumn: document.getElementById('configShowMax').checked
+    };
+    const response = await window.secureFetch('/api/config', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+    const msg = document.getElementById('configMessage');
+    if (!response.ok) {
+        msg.textContent = 'Lỗi lưu cấu hình';
+        msg.className = 'text-danger ms-2';
+        return;
+    }
+    msg.textContent = 'Đã lưu';
+    msg.className = 'text-success ms-2';
+    setTimeout(() => msg.textContent = '', 3000);
+    await loadApplication();
+}
+
 document.getElementById('doublesMatchForm').addEventListener('submit', submitDoublesMatch);
 document.getElementById('cancelMatchEdit').addEventListener('click', resetMatchForm);
+if (document.getElementById('configForm')) {
+    document.getElementById('configForm').addEventListener('submit', submitConfig);
+}
 document.addEventListener('admin-auth-changed', () => {
     closePlayDayEditor();
     resetMatchForm();

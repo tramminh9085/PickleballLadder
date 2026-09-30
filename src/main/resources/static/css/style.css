@@ -160,14 +160,14 @@ main {
     padding: 16px;
     font-weight: 600;
     display: grid;
-    grid-template-columns: 60px 1fr 120px 100px 100px 100px;
+    grid-template-columns: 60px 1fr 120px 100px 100px 100px 80px;
     align-items: center;
     gap: 12px;
 }
 
 .table-row {
     display: grid;
-    grid-template-columns: 60px 1fr 120px 100px 100px 100px;
+    grid-template-columns: 60px 1fr 120px 100px 100px 100px 80px;
     align-items: center;
     gap: 12px;
     padding: 16px;
@@ -177,6 +177,15 @@ main {
 
 .table-row:hover {
     background-color: #f9f9f9;
+}
+
+.ladder-table.hide-max .max-col {
+    display: none;
+}
+
+.ladder-table.hide-max .table-header,
+.ladder-table.hide-max .table-row {
+    grid-template-columns: 60px 1fr 120px 100px 100px 100px;
 }
 
 .rank-badge {
@@ -242,16 +251,19 @@ main {
 @media (max-width: 768px) {
     .table-header,
     .table-row {
-        grid-template-columns: 42px minmax(105px, 1fr) 48px 48px;
+        grid-template-columns: 32px 1fr 36px 36px 50px 36px;
         gap: 4px;
-        padding: 10px 8px;
+        padding: 10px 4px;
     }
 
     .table-header > :nth-child(3),
-    .table-header > :nth-child(6),
-    .table-row > :nth-child(3),
-    .table-row > :nth-child(6) {
+    .table-row > :nth-child(3) {
         display: none;
+    }
+
+    .ladder-table.hide-max .table-header,
+    .ladder-table.hide-max .table-row {
+        grid-template-columns: 32px 1fr 36px 36px 60px;
     }
 
     .rank-badge {

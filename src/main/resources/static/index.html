@@ -137,7 +137,22 @@
                         </div>
                     </section>
 
-                    <div class="ladder-table">
+                    <section class="match-entry-card admin-only d-none">
+                        <div class="management-header">
+                            <h2>Cấu hình hiển thị</h2>
+                        </div>
+                        <form id="configForm" style="display: flex; gap: 10px; align-items: center;">
+                            <label for="configMaxLosses">Max trận thua:</label>
+                            <input type="number" id="configMaxLosses" class="filter-input" style="width: 100px" min="0" required>
+                            <label style="display: flex; align-items: center; gap: 5px; margin-left: 10px;">
+                                <input type="checkbox" id="configShowMax"> Hiển thị cột MAX
+                            </label>
+                            <button type="submit" class="btn btn-sm btn-primary ms-auto">Lưu cấu hình</button>
+                            <span id="configMessage" class="text-success ms-2"></span>
+                        </form>
+                    </section>
+
+                    <div class="ladder-table" id="ladderTable">
                         <div class="table-header">
                             <div>#</div>
                             <div>Player Name</div>
@@ -145,6 +160,7 @@
                             <div>Thắng</div>
                             <div>Thua</div>
                             <div>Tỷ lệ thắng</div>
+                            <div class="max-col">MAX</div>
                         </div>
                         <div id="playersList">
                             <div class="loading">Loading players...</div>

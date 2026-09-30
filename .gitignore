@@ -56,3 +56,4 @@ build/
 .env
 .env.local
 .env.*.local
+jdk-17*/

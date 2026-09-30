@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickleball Ladder League - Demo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        :root {
+            --primary-color: #94a105;
+            --secondary-color: #0d6efd;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            padding-top: 70px;
+        }
+
+        header.navbar-light {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 20px;
+        }
+
+        .navbar-brand i {
+            margin-right: 8px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #666 !important;
+            font-weight: 500;
+            margin: 0 12px;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #7a8604;
+            border-color: #7a8604;
+        }
+
+        main {
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .league-card {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .league-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .league-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .league-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .league-status {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .ladder-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 24px;
+        }
+
+        .table-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 16px;
+            font-weight: 600;
+            display: grid;
+            grid-template-columns: 60px 1fr 120px 100px 100px 100px;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 120px 100px 100px 100px;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s;
+        }
+
+        .table-row:hover {
+            background-color: #f9f9f9;
+        }
+
+        .rank-badge {
+            background: linear-gradient(135deg, var(--primary-color), #8a9202);
+            color: white;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .player-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .player-name {
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 15px;
+        }
+
+        .player-location {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .stat-cell {
+            text-align: center;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .rating {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .filter-section {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--dark-color);
+        }
+
+        .filter-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(148, 161, 5, 0.1);
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #dee2e6;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .table-header,
+            .table-row {
+                grid-template-columns: 50px 1fr 80px 80px;
+                gap: 8px;
+            }
+
+            .rank-badge {
+                width: 40px;
+                height: 40px;
+                font-size: 14px;
+            }
+
+            .league-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .league-status {
+                margin-top: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar navbar-expand-lg navbar-light">
+        <nav class="navbar-nav w-100 px-3">
+            <div class="navbar-brand">
+                <i class="fas fa-circle"></i>Pickleball League
+            </div>
+            <div class="ms-auto">
+                <button class="btn btn-sm btn-outline-primary me-2">
+                    <i class="fas fa-user"></i> Log In
+                </button>
+                <button class="btn btn-sm btn-primary">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="row g-4">
+                <!-- Sidebar -->
+                <div class="col-lg-3">
+                    <div class="sidebar">
+                        <div class="sidebar-title">
+                            <i class="fas fa-list"></i> Leagues
+                        </div>
+                        <a href="#" class="btn btn-sm btn-light w-100 text-start active mb-2">
+                            <i class="fas fa-trophy"></i> DK 2026-09-09
+                            <span class="badge bg-success float-end">ACTIVE</span>
+                        </a>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-title">Search Player</div>
+                        <input type="text" class="filter-input" placeholder="Player name or location..." id="searchInput">
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-title">Sort By</div>
+                        <select class="filter-input" id="sortSelect">
+                            <option value="rating">Rating (High to Low)</option>
+                            <option value="wins">Wins (Most)</option>
+                            <option value="name">Name (A-Z)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="col-lg-9">
+                    <!-- League Header -->
+                    <div class="league-card">
+                        <div class="league-header">
+                            <div>
+                                <div class="league-title">DK 2026-09-09</div>
+                                <div class="league-location">
+                                    <i class="fas fa-map-marker-alt"></i>Hà Nội
+                                </div>
+                                <p style="margin-top: 8px; color: #666; font-size: 14px;">
+                                    A pickleball league in Hanoi Vietnam
+                                </p>
+                            </div>
+                            <div class="league-status">ACTIVE</div>
+                        </div>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Total Players</div>
+                            <div class="stat-value" id="totalPlayers">10</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Total Matches</div>
+                            <div class="stat-value" id="totalMatches">137</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Top Rating</div>
+                            <div class="stat-value" id="topRating">1850</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Avg Rating</div>
+                            <div class="stat-value" id="avgRating">1580</div>
+                        </div>
+                    </div>
+
+                    <!-- Ladder Table -->
+                    <div class="ladder-table">
+                        <div class="table-header">
+                            <div>#</div>
+                            <div>Player Name</div>
+                            <div>Rating</div>
+                            <div>Record</div>
+                            <div>Win %</div>
+                            <div>Action</div>
+                        </div>
+                        <div id="playersList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Pickleball Ladder League. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Mock Data
+        const players = [
+            { id: 1, name: 'Nguyễn Văn A', location: 'Hà Nội', skillLevel: 4.5, wins: 15, losses: 3, rating: 1850, rank: 1 },
+            { id: 2, name: 'Trần Thị B', location: 'Hà Nội', skillLevel: 4.2, wins: 14, losses: 5, rating: 1780, rank: 2 },
+            { id: 3, name: 'Lê Văn C', location: 'Hà Nội', skillLevel: 4.0, wins: 12, losses: 6, rating: 1720, rank: 3 },
+            { id: 4, name: 'Phạm Thị D', location: 'TP HCM', skillLevel: 3.8, wins: 11, losses: 7, rating: 1650, rank: 4 },
+            { id: 5, name: 'Hoàng Văn E', location: 'Đà Nẵng', skillLevel: 3.7, wins: 10, losses: 8, rating: 1600, rank: 5 },
+            { id: 6, name: 'Võ Thị F', location: 'Hà Nội', skillLevel: 3.5, wins: 9, losses: 9, rating: 1550, rank: 6 },
+            { id: 7, name: 'Trương Văn G', location: 'TP HCM', skillLevel: 3.3, wins: 8, losses: 10, rating: 1500, rank: 7 },
+            { id: 8, name: 'Bùi Thị H', location: 'Hà Nội', skillLevel: 3.2, wins: 7, losses: 11, rating: 1450, rank: 8 },
+            { id: 9, name: 'Đinh Văn I', location: 'Cần Thơ', skillLevel: 3.0, wins: 6, losses: 12, rating: 1400, rank: 9 },
+            { id: 10, name: 'Ngô Thị K', location: 'Hà Nội', skillLevel: 2.8, wins: 5, losses: 13, rating: 1350, rank: 10 },
+        ];
+
+        let sortBy = 'rating';
+
+        function renderPlayers(filtered = players) {
+            const playersList = document.getElementById('playersList');
+            playersList.innerHTML = '';
+
+            filtered.forEach((player, index) => {
+                const winPercentage = (player.wins / (player.wins + player.losses) * 100).toFixed(1);
+                const row = document.createElement('div');
+                row.className = 'table-row';
+                row.innerHTML = `
+                    <div class="rank-badge">${index + 1}</div>
+                    <div class="player-info">
+                        <div class="player-name">${player.name}</div>
+                        <div class="player-location">
+                            <i class="fas fa-map-marker-alt"></i> ${player.location}
+                        </div>
+                    </div>
+                    <div class="stat-cell rating">${player.rating}</div>
+                    <div class="stat-cell">${player.wins}W - ${player.losses}L</div>
+                    <div class="stat-cell">${winPercentage}%</div>
+                    <div class="stat-cell">
+                        <button class="btn btn-sm btn-outline-primary">View</button>
+                    </div>
+                `;
+                playersList.appendChild(row);
+            });
+        }
+
+        function sortPlayers(array, sortType) {
+            const sorted = [...array];
+            if (sortType === 'rating') {
+                sorted.sort((a, b) => b.rating - a.rating);
+            } else if (sortType === 'wins') {
+                sorted.sort((a, b) => b.wins - a.wins);
+            } else if (sortType === 'name') {
+                sorted.sort((a, b) => a.name.localeCompare(b.name));
+            }
+            return sorted;
+        }
+
+        function filterAndSort() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const sortType = document.getElementById('sortSelect').value;
+
+            let filtered = players.filter(p =>
+                p.name.toLowerCase().includes(searchTerm) ||
+                p.location.toLowerCase().includes(searchTerm)
+            );
+
+            filtered = sortPlayers(filtered, sortType);
+            renderPlayers(filtered);
+        }
+
+        function updateStats() {
+            const totalMatches = players.reduce((sum, p) => sum + p.wins + p.losses, 0);
+            const topRating = Math.max(...players.map(p => p.rating));
+            const avgRating = (players.reduce((sum, p) => sum + p.rating, 0) / players.length).toFixed(0);
+
+            document.getElementById('totalPlayers').textContent = players.length;
+            document.getElementById('totalMatches').textContent = totalMatches;
+            document.getElementById('topRating').textContent = topRating;
+            document.getElementById('avgRating').textContent = avgRating;
+        }
+
+        // Event Listeners
+        document.getElementById('searchInput').addEventListener('keyup', filterAndSort);
+        document.getElementById('sortSelect').addEventListener('change', filterAndSort);
+
+        // Initialize
+        window.addEventListener('load', () => {
+            renderPlayers(sortPlayers(players, 'rating'));
+            updateStats();
+        });
+    </script>
+</body>
+</html>

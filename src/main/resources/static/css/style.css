@@ -256,7 +256,7 @@ main {
     
     .table-header,
     .table-row {
-        grid-template-columns: 28px 1fr 38px 38px 46px 32px;
+        grid-template-columns: 32px 1fr 38px 38px 46px 32px;
         gap: 3px;
         padding: 10px 4px;
     }
@@ -268,7 +268,7 @@ main {
 
     .ladder-table.hide-max .table-header,
     .ladder-table.hide-max .table-row {
-        grid-template-columns: 28px 1fr 40px 40px 52px;
+        grid-template-columns: 32px 1fr 40px 40px 52px;
     }
 
     .stat-cell {
@@ -276,9 +276,9 @@ main {
     }
 
     .rank-badge {
-        width: 36px;
-        height: 36px;
-        font-size: 14px;
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
     }
 
     .player-name {

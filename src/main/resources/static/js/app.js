@@ -139,12 +139,16 @@ function renderSelectedDay() {
         text('playDayTitle', 'Chưa có ngày chơi');
         text('playDayDateLabel', '');
         text('playDayMemberCount', 'Hãy tạo ngày chơi đầu tiên.');
+        text('ladderPlayDayText', '');
         standings = [];
     } else {
         text('playDayTitle', day.name);
         text('playDayDateLabel', day.playDate);
         text('playDayMemberCount', `${selectedDayPlayers().length} người tham gia`);
         calculateStandings();
+        const dateParts = day.playDate.split('-');
+        const formattedDate = dateParts.length === 3 ? `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}` : day.playDate;
+        text('ladderPlayDayText', `Ngày chơi: ${day.name} (${formattedDate})`);
     }
     renderPlayDays();
     populatePlayerSelects();

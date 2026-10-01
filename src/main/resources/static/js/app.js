@@ -312,11 +312,6 @@ async function loadApplication() {
     matches = await matchesResponse.json();
     if (configResponse.ok) {
         appConfig = await configResponse.json();
-        const configMaxLosses = document.getElementById('configMaxLosses');
-        if (configMaxLosses) {
-            configMaxLosses.value = appConfig.maxLosses;
-            document.getElementById('configShowMax').checked = appConfig.showMaxColumn;
-        }
         const ladderTable = document.getElementById('ladderTable');
         if (ladderTable) {
             if (appConfig.showMaxColumn) {
@@ -426,34 +421,8 @@ document.getElementById('editPlayDayButton').addEventListener('click', () => {
 });
 document.getElementById('playDayForm').addEventListener('submit', submitPlayDay);
 document.getElementById('cancelPlayDayEdit').addEventListener('click', closePlayDayEditor);
-async function submitConfig(event) {
-    event.preventDefault();
-    const payload = {
-        maxLosses: Number(document.getElementById('configMaxLosses').value),
-        showMaxColumn: document.getElementById('configShowMax').checked
-    };
-    const response = await window.secureFetch('/api/config', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    });
-    const msg = document.getElementById('configMessage');
-    if (!response.ok) {
-        msg.textContent = 'Lỗi lưu cấu hình';
-        msg.className = 'text-danger ms-2';
-        return;
-    }
-    msg.textContent = 'Đã lưu';
-    msg.className = 'text-success ms-2';
-    setTimeout(() => msg.textContent = '', 3000);
-    await loadApplication();
-}
-
 document.getElementById('doublesMatchForm').addEventListener('submit', submitDoublesMatch);
 document.getElementById('cancelMatchEdit').addEventListener('click', resetMatchForm);
-if (document.getElementById('configForm')) {
-    document.getElementById('configForm').addEventListener('submit', submitConfig);
-}
 document.addEventListener('admin-auth-changed', () => {
     closePlayDayEditor();
     resetMatchForm();

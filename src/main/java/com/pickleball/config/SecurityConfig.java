@@ -26,10 +26,10 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.csrfTokenRepository(csrfRepository))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index.html", "/players.html", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/", "/index.html", "/players.html", "/stats.html", "/config.html", "/css/**", "/js/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/auth/status").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/players/**", "/api/play-days/**", "/api/matches/**")
+                        .requestMatchers(HttpMethod.GET, "/api/players/**", "/api/play-days/**", "/api/matches/**", "/api/config")
                         .permitAll()
                         .anyRequest().hasRole("ADMIN")
                 )

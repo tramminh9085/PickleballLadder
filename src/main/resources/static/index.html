@@ -15,6 +15,9 @@
                 <i class="fas fa-circle"></i>Pickleball League
             </div>
             <div class="ms-auto">
+                <a class="btn btn-sm btn-outline-secondary admin-only d-none me-2" href="/config.html">
+                    <i class="fas fa-cog"></i> Cấu hình
+                </a>
                 <a class="btn btn-sm btn-outline-primary admin-only d-none me-2" href="/players.html">
                     <i class="fas fa-users"></i> Quản lý người chơi
                 </a>
@@ -37,6 +40,9 @@
                         <button type="button" class="btn btn-sm btn-primary w-100 mt-2 admin-only d-none" id="newPlayDayButton">
                             <i class="fas fa-plus"></i> Tạo ngày chơi
                         </button>
+                        <a href="/stats.html" class="btn btn-sm btn-outline-success w-100 mt-2">
+                            <i class="fas fa-chart-bar"></i> Thống kê MAX
+                        </a>
                     </div>
 
                     <div class="filter-section d-none" id="playDayEditor">
@@ -132,20 +138,7 @@
                         </div>
                     </section>
 
-                    <section class="match-entry-card admin-only d-none">
-                        <div class="management-header">
-                            <h2>Cấu hình hiển thị</h2>
-                        </div>
-                        <form id="configForm" style="display: flex; gap: 10px; align-items: center;">
-                            <label for="configMaxLosses">Max trận thua:</label>
-                            <input type="number" id="configMaxLosses" class="filter-input" style="width: 100px" min="0" required>
-                            <label style="display: flex; align-items: center; gap: 5px; margin-left: 10px;">
-                                <input type="checkbox" id="configShowMax"> Hiển thị cột MAX
-                            </label>
-                            <button type="submit" class="btn btn-sm btn-primary ms-auto">Lưu cấu hình</button>
-                            <span id="configMessage" class="text-success ms-2"></span>
-                        </form>
-                    </section>
+
 
                     <div class="ladder-table" id="ladderTable">
                         <div class="table-header">

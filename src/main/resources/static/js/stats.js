@@ -109,6 +109,12 @@ function calculateStats() {
     const list = document.getElementById('statsList');
     list.innerHTML = '';
     
+    const statsMonthText = document.getElementById('statsMonthText');
+    if (statsMonthText) {
+        const [yyyy, mm] = month.split('-');
+        statsMonthText.textContent = `Thống kê MAX cho tháng: ${mm}/${yyyy}`;
+    }
+
     if (results.length === 0) {
         list.innerHTML = '<div class="loading">Không có dữ liệu cho các lựa chọn này.</div>';
         return;
